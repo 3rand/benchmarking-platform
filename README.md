@@ -51,3 +51,4 @@ To get more help on the `angular-cli` use `ng --help` or go check out the [Angul
 
 ### Authors
 * [Erand Smakaj](https://github.com/3rand)
+* [Enkelejda Miho](https://github.com/enkelejdamiho)
