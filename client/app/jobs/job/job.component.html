@@ -1,0 +1,10 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Benchmarks <span class="pull-right">
+            <button class="btn btn-success" ><i class="fa fa-plus-circle"></i> New Job</button>
+        </span></h4>
+    </div>
+    <div class="card-body" style="overflow-x: scroll">
+        <ng2-smart-table [settings]="tableSettings" [source]="jobs" (custom)="tableEvent($event)"> </ng2-smart-table>
+    </div>
+</div>

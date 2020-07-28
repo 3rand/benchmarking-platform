@@ -1,0 +1,40 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Datasets <span class="pull-right">
+            <button class="btn btn-success" (click)="open(datasetEditModal)"><i class="fa fa-plus-circle"></i> New dataset</button>
+        </span> </h4>
+    </div>
+    <div class="card-body">
+        <ng2-smart-table [settings]="tableSettings" [source]="datasets" (custom)="tableEvent($event)"> </ng2-smart-table>
+    </div>
+</div>
+
+
+
+<ng-template #datasetEditModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{!!newDataset._id ? 'Rename' : 'Create'}} dataset</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Dataset name</span>
+            </div>
+            <input type="text" class="form-control" placeholder="new dataset" aria-label="New dataset name" aria-describedby="basic-addon1" [(ngModel)]="newDataset.name">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2">Description</span>
+            </div>
+            <input type="text" class="form-control" placeholder="description" aria-label="New dataset description" aria-describedby="basic-addon2" [(ngModel)]="newDataset.description">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" [disabled]="newDataset.name.length==0" (click)="modal.close(newDataset)">Ok</button>
+    </div>
+</ng-template>
+
+<app-toast [message]="toast.message"></app-toast>

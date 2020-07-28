@@ -1,0 +1,64 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Annotation <strong>Test annotation_1</strong></h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-3">Dataset: <strong>Lorem ipsum</strong></div>
+            <div class="col-3">Annotated sequences <strong>756</strong></div>
+            <div class="col-3">Tool used: <strong>IgBLAST 16</strong></div>
+            <div class="col-3">Job ID: <strong>XYE234T</strong></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-pills nav-fill my-2">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/annotations/{{annotationdId}}/details" routerLinkActive="active">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/annotations/{{annotationdId}}/sequences" routerLinkActive="active">Annotated sequences</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" *ngIf="action=='details'">
+        <div class="row">
+            <h5>V Genes</h5>
+            <ngx-charts-bar-vertical
+                    [view]="view"
+                    [results]="single"
+                    [gradient]="gradient"
+                    [xAxis]="showXAxis"
+                    [yAxis]="showYAxis"
+                    [legend]="showLegend"
+                    [showXAxisLabel]="showXAxisLabel"
+                    [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabel"
+                    [yAxisLabel]="yAxisLabel"
+            >
+            </ngx-charts-bar-vertical>
+        </div>
+        <div class="row">
+            <h5>D Genes</h5>
+            <ngx-charts-bar-vertical
+                    [view]="view"
+                    [results]="single"
+                    [gradient]="gradient"
+                    [xAxis]="showXAxis"
+                    [yAxis]="showYAxis"
+                    [legend]="showLegend"
+                    [showXAxisLabel]="showXAxisLabel"
+                    [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabel"
+                    [yAxisLabel]="yAxisLabel"
+            >
+            </ngx-charts-bar-vertical>
+        </div>
+    </div>
+    <div class="card-body" *ngIf="action=='sequences'">
+        <ng2-smart-table [settings]="tableSettings" [source]="sequencesAnnoated"> </ng2-smart-table>
+    </div>
+</div>
+
+

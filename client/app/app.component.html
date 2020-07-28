@@ -1,52 +1,108 @@
-<div class="container">
+<div class="container-fluid">
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <button class="navbar-toggler" type="button"
-            data-toggle="collapse" data-target="#navbar-supported-content"
-            aria-controls="navbar-supported-content" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbar-supported-content">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a routerLink="/" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-            <i class="fa fa-home"></i> Home
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/sequences" class="nav-link" routerLinkActive="active">
-            <i class="fa fa-list"></i> Sequences
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/login" class="nav-link" routerLinkActive="active" *ngIf="!auth.loggedIn">
-            <i class="fa fa-sign-in"></i> Login
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/register" class="nav-link" routerLinkActive="active" *ngIf="!auth.loggedIn">
-            <i class="fa fa-user-plus"></i> Register
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/account" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
-            <i class="fa fa-user"></i> Account ({{auth.currentUser.username}})
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/admin" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn && auth.isAdmin">
-            <i class="fa fa-lock"></i> Admin
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/logout" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
-            <i class="fa fa-sign-out"></i> Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse" data-target="#navbar-supported-content"
+                aria-controls="navbar-supported-content" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-supported-content">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a routerLink="/" class="nav-link" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{exact:true}">
+                        <i class="fa fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link border-right" *ngIf="auth.loggedIn">
+                        &nbsp;
+                    </a>
+                </li>
 
-  <router-outlet></router-outlet>
+                <li class="nav-item" *ngIf="auth.loggedIn">
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle nav-link" type="button" id="dropdownMenuRawData"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-table"></i> Raw data
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuRawData">
+                            <a class="dropdown-item" routerLink="datasets">Datasets</a>
+                            <a class="dropdown-item" routerLink="sequenceFiles">Files</a>
+                            <a class="dropdown-item" routerLink="sequences">All sequences</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/germlines" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                        <i class="fa fa-share-alt"></i> Germlines
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/annotations" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                        <i class="fa fa-barcode"></i> Annotations
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/benchmarks" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                        <i class="fa fa-bar-chart"></i> Benchmarks
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link border-right" *ngIf="auth.loggedIn">
+                        &nbsp;
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/tools" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                        <i class="fa fa-wrench"></i> Tools
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/jobs" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                        <i class="fa fa-cogs"></i> Jobs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/notifications" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                        <i class="fa fa-window-restore"></i> Notifications
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link border-right" *ngIf="auth.loggedIn">
+                       &nbsp;
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/login" class="nav-link" routerLinkActive="active" *ngIf="!auth.loggedIn">
+                        <i class="fa fa-sign-in"></i> Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/register" class="nav-link" routerLinkActive="active" *ngIf="!auth.loggedIn">
+                        <i class="fa fa-user-plus"></i> Register
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/account" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                        <i class="fa fa-user"></i> {{auth.currentUser.username ? auth.currentUser.username : 'Account'}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/admin" class="nav-link" routerLinkActive="active"
+                       *ngIf="auth.loggedIn && auth.isAdmin">
+                        <i class="fa fa-lock"></i> Admin
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/logout" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                        <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <router-outlet></router-outlet>
 
 </div>

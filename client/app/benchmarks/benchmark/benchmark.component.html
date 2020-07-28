@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Benchmarks <span class="pull-right">
+            <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus-circle"></i> New benchmark</button>
+        </span></h4>
+    </div>
+    <div class="card-body" style="overflow-x: scroll">
+        <ng2-smart-table [settings]="tableSettings" [source]="benchmarks" (custom)="tableEvent($event)"> </ng2-smart-table>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Benchmark</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select dataset
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item">Dataset 1</a>
+                                <a class="dropdown-item">Dataset 2</a>
+                                <a class="dropdown-item">Dataset 3</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="dropdown">
+                            <div class="form-check" *ngFor="let anntot of ['Annotation_1-IgBLAST', 'Annotation_2-IgBLAST', 'Annotation_x-partis']">
+                                <input class="form-check-input" type="checkbox"
+                                       id="{{anntot}}">
+                                <label class="form-check-label" for="{{anntot}}">
+                                    {{anntot}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit job</button>
+            </div>
+        </div>
+    </div>
+</div>

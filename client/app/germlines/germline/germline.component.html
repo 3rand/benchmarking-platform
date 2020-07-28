@@ -1,0 +1,92 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Germlines <span class="pull-right">
+            <button class="btn btn-success" (click)="open(germlineEditModal)"><i class="fa fa-plus-circle"></i> New germline</button>
+        </span></h4>
+    </div>
+    <div class="card-body" style="overflow-x: scroll">
+        <ng2-smart-table [settings]="tableSettings" [source]="germlines" (custom)="tableEvent($event)"> </ng2-smart-table>
+    </div>
+</div>
+
+<ng-template #germlineEditModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{!!newGermline._id ? 'Rename' : 'Create'}} germline</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Germline name</span>
+            </div>
+            <input type="text" class="form-control" placeholder="new dataset" aria-label="New dataset name" aria-describedby="basic-addon1" [(ngModel)]="newGermline.name">
+        </div>
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{newGermline.privacy.length>0 ? newGermline.privacy : 'Select privacy level'}}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="newGermline.privacy='Public'">Public</a>
+                <a class="dropdown-item" (click)="newGermline.privacy='Private'">Private</a>
+            </div>
+        </div>
+
+        <h5>V Genes File</h5>
+        <div class="drop-container"
+             ngFileDrop
+             [options]="options"
+             (uploadOutput)="onUploadOutput($event)"
+             [uploadInput]="uploadInput"
+             [ngClass]="{ 'is-drop-over': dragOver }">
+        </div>
+
+        <label class="upload-button">
+            <input
+                    type="file"
+                    ngFileSelect
+                    [options]="options"
+                    (uploadOutput)="onUploadOutput($event)"
+                    [uploadInput]="uploadInput" />
+        </label>
+        <h5>V Genes File</h5>
+        <div class="drop-container"
+             ngFileDrop
+             [options]="options"
+             (uploadOutput)="onUploadOutput($event)"
+             [uploadInput]="uploadInput"
+             [ngClass]="{ 'is-drop-over': dragOver }">
+        </div>
+
+        <label class="upload-button">
+            <input
+                    type="file"
+                    ngFileSelect
+                    [options]="options"
+                    (uploadOutput)="onUploadOutput($event)"
+                    [uploadInput]="uploadInput" />
+        </label>
+        <h5>V Genes File</h5>
+        <div class="drop-container"
+             ngFileDrop
+             [options]="options"
+             (uploadOutput)="onUploadOutput($event)"
+             [uploadInput]="uploadInput"
+             [ngClass]="{ 'is-drop-over': dragOver }">
+        </div>
+
+        <label class="upload-button">
+            <input
+                    type="file"
+                    ngFileSelect
+                    [options]="options"
+                    (uploadOutput)="onUploadOutput($event)"
+                    [uploadInput]="uploadInput" />
+        </label>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" [disabled]="newGermline.name.length==0" (click)="modal.close(newGermline)">Ok</button>
+    </div>
+</ng-template>

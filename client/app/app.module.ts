@@ -13,15 +13,32 @@ import {AuthGuardAdmin} from './services/auth-guard-admin.service';
 // Components
 import {AppComponent} from './app.component';
 import {AboutComponent} from './about/about.component';
-import {RegisterComponent} from './register/register.component';
-import {LoginComponent} from './login/login.component';
-import {LogoutComponent} from './logout/logout.component';
-import {AccountComponent} from './account/account.component';
-import {AdminComponent} from './admin/admin.component';
+import {RegisterComponent} from './account-management/register/register.component';
+import {LoginComponent} from './account-management/login/login.component';
+import {LogoutComponent} from './account-management/logout/logout.component';
+import {AccountComponent} from './account-management/account/account.component';
+import {AdminComponent} from './administration/admin/admin.component';
 import {NotFoundComponent} from './not-found/not-found.component';
-import {SequencesComponent} from './sequences/sequences.component';
-import {AddSequencesComponent} from './add-sequences/add-sequences.component';
-import {FileSelectDirective, FileUploader} from 'ng2-file-upload';
+import { DatasetComponent } from './datasets/dataset/dataset.component';
+import { SequenceFileComponent } from './datasets/sequence-file/sequence-file.component';
+import { SequencesComponent } from './datasets/sequences/sequences.component';
+import { DatasetDetailsComponent } from './datasets/dataset-details/dataset-details.component';
+import {Ng2SmartTableModule} from 'ng2-smart-table';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {DatasetService} from './services/datasets.service';
+import {SequenceFilesService} from './services/sequence-files.service';
+import {NgxUploaderModule} from 'ngx-uploader';
+import { AnnotationComponent } from './annotations/annotation/annotation.component';
+import { AnnotationDetailsComponent } from './annotations/annotation-details/annotation-details.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { GermlineComponent } from './germlines/germline/germline.component';
+import { GermlineDetailsComponent } from './germlines/germline-details/germline-details.component';
+import { BenchmarkComponent } from './benchmarks/benchmark/benchmark.component';
+import { BenchmarkDetailsComponent } from './benchmarks/benchmark-details/benchmark-details.component';
+import { ToolComponent } from './tools/tool/tool.component';
+import { JobComponent } from './jobs/job/job.component';
+
 
 export function tokenGetter() {
     return localStorage.getItem('token');
@@ -37,8 +54,18 @@ export function tokenGetter() {
         AccountComponent,
         AdminComponent,
         NotFoundComponent,
+        DatasetComponent,
+        SequenceFileComponent,
         SequencesComponent,
-        AddSequencesComponent
+        DatasetDetailsComponent,
+        AnnotationComponent,
+        AnnotationDetailsComponent,
+        GermlineComponent,
+        GermlineDetailsComponent,
+        BenchmarkComponent,
+        BenchmarkDetailsComponent,
+        ToolComponent,
+        JobComponent
     ],
     imports: [
         AppRoutingModule,
@@ -48,14 +75,21 @@ export function tokenGetter() {
                 tokenGetter,
                 // whitelistedDomains: ['localhost:3000', 'localhost:4200']
             }
-        })
+        }),
+        Ng2SmartTableModule,
+        NgbModule,
+        NgxUploaderModule,
+        NgxChartsModule,
+        BrowserAnimationsModule
     ],
     providers: [
         AuthService,
         AuthGuardLogin,
         AuthGuardAdmin,
         SequenceService,
-        UserService
+        UserService,
+        DatasetService,
+        SequenceFilesService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent]

@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Germline details <strong>Germline A</strong></h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">Date Created: <strong>20/07/2020</strong></div>
+            <div class="col-6">Privacy: <strong>Public</strong></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-pills nav-fill my-2">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/germlines/{{germlineID}}/vgenes" routerLinkActive="active">V Genes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/germlines/{{germlineID}}/dgenes" routerLinkActive="active">D Genes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/germlines/{{germlineID}}/jgenes" routerLinkActive="active">J Genes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" *ngIf="action=='vgenes'">
+        <ng2-smart-table [settings]="tableSettings" [source]="vgenes"> </ng2-smart-table>
+    </div>
+    <div class="card-body" *ngIf="action=='dgenes'">
+        <ng2-smart-table [settings]="tableSettings" [source]="dgenes"> </ng2-smart-table>
+    </div>
+    <div class="card-body" *ngIf="action=='jgenes'">
+        <ng2-smart-table [settings]="tableSettings" [source]="jgenes"> </ng2-smart-table>
+    </div>
+</div>
+
+

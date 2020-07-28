@@ -2,6 +2,8 @@ import * as dotenv from 'dotenv';
 import * as express from 'express';
 import * as morgan from 'morgan';
 import * as path from 'path';
+const fileUpload = require('express-fileupload');
+import EmptyFolder from './uploads/empty';
 
 import setMongo from './mongo';
 import setRoutes from './routes';
@@ -12,6 +14,9 @@ app.set('port', (process.env.PORT || 3000));
 app.use('/', express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(fileUpload({
+    createParentPath: true
+}));
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
