@@ -38,6 +38,7 @@ import { BenchmarkComponent } from './benchmarks/benchmark/benchmark.component';
 import { BenchmarkDetailsComponent } from './benchmarks/benchmark-details/benchmark-details.component';
 import { ToolComponent } from './tools/tool/tool.component';
 import { JobComponent } from './jobs/job/job.component';
+import {GermlinesService} from './services/germlines.service';
 
 
 export function tokenGetter() {
@@ -89,7 +90,8 @@ export function tokenGetter() {
         SequenceService,
         UserService,
         DatasetService,
-        SequenceFilesService
+        SequenceFilesService,
+        GermlinesService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent]

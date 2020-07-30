@@ -21,72 +21,31 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Germline name</span>
             </div>
-            <input type="text" class="form-control" placeholder="new dataset" aria-label="New dataset name" aria-describedby="basic-addon1" [(ngModel)]="newGermline.name">
+            <input type="text" class="form-control" placeholder="new germline" aria-label="New dataset name" aria-describedby="basic-addon1" [(ngModel)]="newGermline.name">
         </div>
         <div class="btn-group dropright">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{newGermline.privacy.length>0 ? newGermline.privacy : 'Select privacy level'}}
+                {{!!newGermline.privacy ? newGermline.privacy : 'Select privacy level'}}
             </button>
             <div class="dropdown-menu">
                 <a class="dropdown-item" (click)="newGermline.privacy='Public'">Public</a>
                 <a class="dropdown-item" (click)="newGermline.privacy='Private'">Private</a>
             </div>
         </div>
-
-        <h5>V Genes File</h5>
-        <div class="drop-container"
-             ngFileDrop
-             [options]="options"
-             (uploadOutput)="onUploadOutput($event)"
-             [uploadInput]="uploadInput"
-             [ngClass]="{ 'is-drop-over': dragOver }">
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{!!newGermline.organism ? newGermline.organism : 'Select organism'}}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="newGermline.organism='human'">Human</a>
+                <a class="dropdown-item" (click)="newGermline.organism='mouse'">Mouse</a>
+            </div>
         </div>
-
-        <label class="upload-button">
-            <input
-                    type="file"
-                    ngFileSelect
-                    [options]="options"
-                    (uploadOutput)="onUploadOutput($event)"
-                    [uploadInput]="uploadInput" />
-        </label>
-        <h5>V Genes File</h5>
-        <div class="drop-container"
-             ngFileDrop
-             [options]="options"
-             (uploadOutput)="onUploadOutput($event)"
-             [uploadInput]="uploadInput"
-             [ngClass]="{ 'is-drop-over': dragOver }">
-        </div>
-
-        <label class="upload-button">
-            <input
-                    type="file"
-                    ngFileSelect
-                    [options]="options"
-                    (uploadOutput)="onUploadOutput($event)"
-                    [uploadInput]="uploadInput" />
-        </label>
-        <h5>V Genes File</h5>
-        <div class="drop-container"
-             ngFileDrop
-             [options]="options"
-             (uploadOutput)="onUploadOutput($event)"
-             [uploadInput]="uploadInput"
-             [ngClass]="{ 'is-drop-over': dragOver }">
-        </div>
-
-        <label class="upload-button">
-            <input
-                    type="file"
-                    ngFileSelect
-                    [options]="options"
-                    (uploadOutput)="onUploadOutput($event)"
-                    [uploadInput]="uploadInput" />
-        </label>
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" [disabled]="newGermline.name.length==0" (click)="modal.close(newGermline)">Ok</button>
+        <button type="button" class="btn btn-outline-dark" [disabled]="!newGermline.name" (click)="modal.close(newGermline)">Ok</button>
     </div>
 </ng-template>
+
+<app-toast [message]="toast.message"></app-toast>

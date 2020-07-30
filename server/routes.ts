@@ -4,6 +4,7 @@ import SequenceCtrl from './controllers/sequence';
 import UserCtrl from './controllers/user';
 import DatasetCtrl from './controllers/dataset';
 import SequenceFileCtrl from './controllers/sequence-file';
+import GermlineCtrl from './controllers/germline';
 
 function setRoutes(app) {
     const router = express.Router();
@@ -11,6 +12,7 @@ function setRoutes(app) {
     const userCtrl = new UserCtrl();
     const datasetCtrl = new DatasetCtrl();
     const sequenceFileCtrl = new SequenceFileCtrl();
+    const germlineCtrl = new GermlineCtrl();
 
     // Sequences
     router.route('/sequences').get(sequenceCtrl.getAll);
@@ -43,6 +45,14 @@ function setRoutes(app) {
     router.route('/sequenceFile/:id').get(sequenceFileCtrl.get);
     router.route('/sequenceFile/:id').put(sequenceFileCtrl.update);
     router.route('/sequenceFile/:id').delete(sequenceFileCtrl.delete);
+
+
+    // Germlines
+    router.route('/germlines').get(germlineCtrl.getAll);
+    router.route('/germline').post(germlineCtrl.insert);
+    router.route('/germline/:id').get(germlineCtrl.get);
+    router.route('/germline/:id').put(germlineCtrl.update);
+    router.route('/germline/:id').delete(germlineCtrl.delete);
 
     // Apply the routes to our application with the prefix /api
     app.use('/api', router);

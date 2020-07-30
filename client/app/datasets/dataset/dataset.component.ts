@@ -65,7 +65,7 @@ export class DatasetComponent implements OnInit {
     datasets = [];
     newDataset;
 
-    constructor(private modalService: NgbModal, private datasetService: DatasetService, private router: Router, public toast: ToastComponent,) {
+    constructor(private modalService: NgbModal, private datasetService: DatasetService, private router: Router, public toast: ToastComponent) {
         this.resetNewDatasetObject();
     }
 
