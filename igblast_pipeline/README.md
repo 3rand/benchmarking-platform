@@ -1,2 +1,0 @@
-# igBLAST_pipeline
-

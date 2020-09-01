@@ -1,3 +1,0 @@
-/home/erand/igblast_test/data_test/truck_S1_L001_R1_001.fastq.gz
-/home/erand/igblast_test/data_test/truck_S1_L001_R2_001.fastq.gz
-
