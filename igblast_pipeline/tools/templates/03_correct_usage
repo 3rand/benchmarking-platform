@@ -1,0 +1,35 @@
+
+
+Usage:
+
+sh runIgBLAST RUN_NAME DATA_FOLDER GERMLINE_FOLDER SPECIES RECEPTOR
+
+
+RUN_NAME
+    A friendly name for the job (will appear in your email notifications)
+
+DATA_FOLDER
+    A folder which contains fastq.gz files, which can be in sub-directories if needed.
+    The results will be written on the same place where the original files are.
+
+
+GERMLINE_FOLDER
+    This should point to one fo the ./germlines/folders
+    If you would like to update the germline contact @erand or use the following command:
+    sh setup/update_germlines.sh   <- this script will download the latest germline and place it in a folder with the date name
+    this folder with a date name should be the input to the GERMLINE_FOLDER input variable
+
+
+SPECIES
+    Can be one of {human,mouse,rabbit,rat,rhesus_monkey}
+    WARNING!
+    The grammar is not checked for this input. The pipeline will fail if you mistype
+
+
+RECEPTOR
+    Can be one of {ig,tr}
+    WARNING!
+    The grammar is not checked for this input. The pipeline will fail if you mistype
+
+
+

@@ -1,0 +1,22 @@
+RUN_ID=$1
+RUN_FOLDER=/home/$USER/igblast-runs/$RUN_ID
+
+if [ -z "$RUN_ID" ]
+then
+	echo "Please provide a Run ID to check progress."
+	exit 1
+fi
+
+
+if [ -d $RUN_FOLDER ]
+then
+    echo "Commands for this job:"
+    cat $RUN_FOLDER/run_commands.sh
+    echo ""
+    echo "STATUS:"
+    echo ""
+	cat $RUN_FOLDER/run_log.txt | grep 'PROCESSING\|FILE\|PROGRESS\|OUTPUT'
+else
+	echo "The Run ID does not exist for user $USER"
+fi
+

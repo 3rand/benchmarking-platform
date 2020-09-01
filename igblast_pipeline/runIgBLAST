@@ -1,0 +1,230 @@
+#!/bin/bash
+
+# Getting paths
+MY_PATH="`dirname \"$0\"`"              # relative
+MY_PATH="`( cd \"${MY_PATH}\" && pwd )`"  # absolutized and normalized
+if [ -z "$MY_PATH" ] ; then
+  # error; for some reason, the path is not accessible
+  # to the script (e.g. permissions re-evaled after suid)
+  exit 1  # fail
+fi
+
+cat ${MY_PATH}/tools/templates/02_running
+
+
+correct_usage()
+{
+   cat ${MY_PATH}/tools/templates/03_correct_usage
+}
+
+
+if [ -z "$1" ]
+then
+	echo "Run name not provided. Stopping."
+	correct_usage
+    exit 2
+else
+    RUN_ID=$1
+fi
+
+if [ -z "$2" ]
+then
+	echo "DATASET folder not provided. Stopping."
+	correct_usage
+    exit 2
+else
+    if [ ! -d $2 ]
+    then
+        echo "$2 is not a folder! Stopping."
+        correct_usage
+        exit 2
+    else
+        FQ_PATH=$2
+    fi
+fi
+
+
+if [ -z "$3" ]
+then
+	echo "GERMLINE folder date not provided. Will exit."
+	correct_usage
+	exit 2
+else
+	 if [ ! -d $3 ]
+	 then
+	    echo "$3 is not a folder! Stopping."
+	    correct_usage
+        exit 2
+     else
+        REF_PATH=$3
+     fi
+fi
+
+
+if [ -z "$4" ]
+then
+	echo "SPECIES not provided. Will exit."
+	correct_usage
+	exit 2
+else
+	 SPECIES=$4
+fi
+
+if [ -z "$5" ]
+then
+	echo "RECEPTOR not provided. Will exit."
+	correct_usage
+	exit 2
+else
+	 RECEPTOR=$5
+fi
+
+
+FQ_PATH="`( cd \"${FQ_PATH}\" && pwd )`"
+REF_PATH="`( cd \"${REF_PATH}\" && pwd )`/igblast"
+
+
+cd $MY_PATH
+RUN_FOLDER=/home/$USER/igblast-runs/$RUN_ID
+if [ -d "$RUN_FOLDER" ]
+then
+	echo ""
+	echo "The folder $RUN_FOLDER will be OVERWRITTEN !!!";
+
+	echo "Press [ENTER] to continute"
+	while read answer; do
+	  if [ -z "$answer" ]; then
+	    rm -Rf $RUN_FOLDER
+	    break
+	  fi
+	done
+fi
+mkdir -p $RUN_FOLDER
+
+INPUT_PAIRS=$RUN_FOLDER/input_fq.txt
+INPUT_FASTA=$RUN_FOLDER/input_fasta.txt
+touch $INPUT_PAIRS
+touch $INPUT_FASTA
+
+
+collect_inputs_1_2()
+{
+    the_path=$1
+    the_pattern=$3
+    the_output=$2
+
+    FQ_LIST=`find $the_path -type f -name "$the_pattern"`
+
+    for R1FQ in $FQ_LIST; do
+        R2FQ="${R1FQ/_1/_2}"
+
+        if [ -f $R2FQ ]
+        then
+             echo $R1FQ >> $the_output
+             echo $R2FQ >> $the_output
+             echo "" >> $the_output
+        fi
+    done
+}
+
+collect_inputs_R1_R2()
+{
+    the_path=$1
+    the_pattern=$3
+    the_output=$2
+
+    FQ_LIST=`find $the_path -type f -name "$the_pattern"`
+
+    for R1FQ in $FQ_LIST; do
+        R2FQ="${R1FQ/_R1/_R2}"
+
+        if [ -f $R2FQ ]
+        then
+             echo $R1FQ >> $the_output
+             echo $R2FQ >> $the_output
+             echo "" >> $the_output
+        fi
+    done
+}
+
+collect_fastas()
+{
+    the_path=$1
+    the_pattern=$3
+    the_output=$2
+
+    FQ_LIST=`find $the_path -type f -name "$the_pattern"`
+
+    for R1FQ in $FQ_LIST; do
+	echo $R1FQ >> $the_output
+    done
+}
+
+collect_inputs_1_2 $FQ_PATH $INPUT_PAIRS "*_1*.fastq.gz"
+collect_inputs_1_2 $FQ_PATH $INPUT_PAIRS "*_1*.fastq"
+collect_inputs_R1_R2 $FQ_PATH $INPUT_PAIRS "*_R1*.fastq.gz"
+collect_inputs_R1_R2 $FQ_PATH $INPUT_PAIRS "*_R1*.fastq"
+collect_fastas $FQ_PATH $INPUT_FASTA "*.fasta"
+
+
+
+echo ""
+echo ""
+echo "Will process the following pairs: "
+echo ""
+cat $INPUT_PAIRS
+echo ""
+echo "Will process the following single fastas: "
+echo ""
+cat $INPUT_FASTA
+
+NR_LINES=$(cat $INPUT_PAIRS | wc -l)
+NR_FASTA=$(cat $INPUT_FASTA | wc -l)
+
+NR_PAIRS=$(echo "$NR_LINES / 3 + $NR_FASTA"  | bc )
+
+echo "Lines: $NR_LINES"
+echo "FASTA: $NR_FASTA"
+echo "PAIRS: $NR_PAIRS"
+
+#COMMAND="sbatch --job-name=$RUN_ID"
+#COMMAND="$COMMAND --array=1-$NR_PAIRS"
+#COMMAND="$COMMAND --mail-type=ALL --mail-user=aihealthlab---scicore@googlegroups.com"
+#COMMAND="$COMMAND  --cpus-per-task=$CPU_PER_TASK --mem-per-cpu=$MEM_PER_CPU --qos=$QOS_PER_TASK --time=$TIME_PER_T"
+
+
+COMMAND="$MY_PATH/tools/templates/.igblastRunTemplate $RUN_ID $SPECIES $RECEPTOR $REF_PATH"
+echo ""
+echo ""
+echo ""
+echo "######################################"
+echo ""
+echo "  READY TO RUN"
+echo ""
+echo "Will execute the following:"
+
+echo $COMMAND
+
+echo ""
+echo "######################################"
+echo ""
+echo ""
+echo "Press [ENTER] to continue"
+
+while read answer2; do
+    if [ -z "$answer2" ]; then
+        if [ -n "$NR_PAIRS" ]
+        then
+            LOG_FILE="$RUN_FOLDER/run_log.txt"
+            SCRIPT_FILE="$RUN_FOLDER/run_commands.sh";
+            for NUMBER_OF_PAIR in $(seq 1 $NR_PAIRS)
+            do
+                echo "Adding task number: $NUMBER_OF_PAIR"
+                echo "$COMMAND $NUMBER_OF_PAIR" >> $SCRIPT_FILE
+            done
+            echo "nohup sh $SCRIPT_FILE 1>$LOG_FILE 2>&1 &"
+            nohup sh $SCRIPT_FILE 1>$LOG_FILE 2>&1 &
+        fi
+        break
+    fi
+done

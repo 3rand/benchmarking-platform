@@ -1,0 +1,42 @@
+PACKAGE_NAME: igblast
+PACKAGE_VERSION: 1.14.0
+PACKAGE_SIGNATURE: ICC_1503-ReleaseMT64--x86_64-unknown-linux3.10.0-gnu2.17-coremake11
+PACKAGE_CONFIG: Linux64-Centos : icc : ./c++/compilers/unix/ICC.sh --with-bin-release --with-strip --without-debug --without-pcre --with-mt --with-openmp --with-flat-makefile --with-experimental=Int8GI --with-downloaded-vdb --with-static-vdb --without-gnutls --without-gcrypt --with-build-root-sfx=--Linux64-Centos-icc --with-flat-makefile --with-ncbi-public --without-ccache --without-caution --without-runpath --without-makefile-auto-update --with-projects=scripts/projects/igblast/project.lst --with-internal
+
+>>>>>  igblastp
+
+igblastp: 1.14.0
+ Package: igblast 1.14.0, build Apr 23 2019 11:59:03
+ Package-Config:  Linux64-Centos : icc : ./c++/compilers/unix/ICC.sh --with-bin-release --with-strip --without-debug --without-pcre --with-mt --with-openmp --with-flat-makefile --with-experimental=Int8GI --with-downloaded-vdb --with-static-vdb --without-gnutls --without-gcrypt --with-build-root-sfx=--Linux64-Centos-icc --with-flat-makefile --with-ncbi-public --without-ccache --without-caution --without-runpath --without-makefile-auto-update --with-projects=scripts/projects/igblast/project.lst --with-internal
+ Build-Signature:  ICC_1503-ReleaseMT64--x86_64-unknown-linux3.10.0-gnu2.17-coremake11
+ Build-Date:  Apr 23 2019 12:48:49
+ Production-Version:  20190103
+ Built-As:  igblastp
+
+
+
+>>>>>  igblastn
+
+igblastn: 1.14.0
+ Package: igblast 1.14.0, build Apr 23 2019 11:59:03
+ Package-Config:  Linux64-Centos : icc : ./c++/compilers/unix/ICC.sh --with-bin-release --with-strip --without-debug --without-pcre --with-mt --with-openmp --with-flat-makefile --with-experimental=Int8GI --with-downloaded-vdb --with-static-vdb --without-gnutls --without-gcrypt --with-build-root-sfx=--Linux64-Centos-icc --with-flat-makefile --with-ncbi-public --without-ccache --without-caution --without-runpath --without-makefile-auto-update --with-projects=scripts/projects/igblast/project.lst --with-internal
+ Build-Signature:  ICC_1503-ReleaseMT64--x86_64-unknown-linux3.10.0-gnu2.17-coremake11
+ Build-Date:  Apr 23 2019 12:48:29
+ Production-Version:  20190103
+ Built-As:  igblastn
+
+
+
+>>>>>  makeblastdb
+
+makeblastdb: 2.9.0+
+ Package: igblast 1.14.0, build Apr 23 2019 11:59:03
+ Package-Config:  Linux64-Centos : icc : ./c++/compilers/unix/ICC.sh --with-bin-release --with-strip --without-debug --without-pcre --with-mt --with-openmp --with-flat-makefile --with-experimental=Int8GI --with-downloaded-vdb --with-static-vdb --without-gnutls --without-gcrypt --with-build-root-sfx=--Linux64-Centos-icc --with-flat-makefile --with-ncbi-public --without-ccache --without-caution --without-runpath --without-makefile-auto-update --with-projects=scripts/projects/igblast/project.lst --with-internal
+ Build-Signature:  ICC_1503-ReleaseMT64--x86_64-unknown-linux3.10.0-gnu2.17-coremake11
+ Build-Date:  Apr 23 2019 12:48:58
+ Production-Version:  20190103
+ Built-As:  makeblastdb
+
+
+
+

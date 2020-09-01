@@ -1,0 +1,3 @@
+/home/patrick/igblast_pipeline/data_test/truck_S1_L001_R1_001.fastq.gz
+/home/patrick/igblast_pipeline/data_test/truck_S1_L001_R2_001.fastq.gz
+
