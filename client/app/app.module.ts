@@ -10,6 +10,8 @@ import {UserService} from './services/user.service';
 import {AuthService} from './services/auth.service';
 import {AuthGuardLogin} from './services/auth-guard-login.service';
 import {AuthGuardAdmin} from './services/auth-guard-admin.service';
+import {JobsService} from './services/jobs.service';
+
 // Components
 import {AppComponent} from './app.component';
 import {AboutComponent} from './about/about.component';
@@ -66,7 +68,7 @@ export function tokenGetter() {
         BenchmarkComponent,
         BenchmarkDetailsComponent,
         ToolComponent,
-        JobComponent
+        JobComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -91,7 +93,8 @@ export function tokenGetter() {
         UserService,
         DatasetService,
         SequenceFilesService,
-        GermlinesService
+        GermlinesService,
+        JobsService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent]

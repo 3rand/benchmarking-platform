@@ -5,6 +5,7 @@ import UserCtrl from './controllers/user';
 import DatasetCtrl from './controllers/dataset';
 import SequenceFileCtrl from './controllers/sequence-file';
 import GermlineCtrl from './controllers/germline';
+import JobCtrl from './controllers/job';
 
 function setRoutes(app) {
     const router = express.Router();
@@ -13,6 +14,7 @@ function setRoutes(app) {
     const datasetCtrl = new DatasetCtrl();
     const sequenceFileCtrl = new SequenceFileCtrl();
     const germlineCtrl = new GermlineCtrl();
+    const jobCtrl = new JobCtrl();
 
     // Sequences
     router.route('/sequences').get(sequenceCtrl.getAll);
@@ -31,7 +33,6 @@ function setRoutes(app) {
     router.route('/user/:id').put(userCtrl.update);
     router.route('/user/:id').delete(userCtrl.delete);
 
-
     // Datsets
     router.route('/datasets').get(datasetCtrl.getAll);
     router.route('/datasetsCondensed').get(datasetCtrl.getCondensed);
@@ -39,6 +40,7 @@ function setRoutes(app) {
     router.route('/dataset/:id').get(datasetCtrl.get);
     router.route('/dataset/:id').put(datasetCtrl.update);
     router.route('/dataset/:id').delete(datasetCtrl.delete);
+
     // Sequence files
     router.route('/sequenceFiles').get(sequenceFileCtrl.getAll);
     router.route('/sequenceFile').post(sequenceFileCtrl.insert);
@@ -53,6 +55,13 @@ function setRoutes(app) {
     router.route('/germline/:id').get(germlineCtrl.get);
     router.route('/germline/:id').put(germlineCtrl.update);
     router.route('/germline/:id').delete(germlineCtrl.delete);
+
+    // Jobs
+    router.route('/jobs').get(jobCtrl.getAll);
+    router.route('/job').post(jobCtrl.insert);
+    router.route('/job/:id').get(jobCtrl.get);
+    router.route('/job/:id').put(jobCtrl.update);
+    router.route('/job/:id').delete(jobCtrl.delete);
 
     // Apply the routes to our application with the prefix /api
     app.use('/api', router);
