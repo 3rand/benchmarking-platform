@@ -71,7 +71,10 @@ export class JobComponent implements OnInit {
             status: 'DONE'
         }];
 
-    constructor(private router: Router, private modalService: NgbModal, private jobsService: JobsService, public toast: ToastComponent) {
+    constructor(private router: Router,
+                private modalService: NgbModal,
+                private jobsService: JobsService,
+                public toast: ToastComponent) {
     }
 
     ngOnInit(): void {
@@ -127,7 +130,7 @@ export class JobComponent implements OnInit {
             // is editing an existing germline
             this.jobsService.editJob(this.newJob).subscribe(
                 data => {
-                    this.toast.setMessage('Germline successfully edited.', 'success');
+                    this.toast.setMessage('Job successfully edited.', 'success');
                     this.getJobs();
 
                 },
@@ -141,7 +144,8 @@ export class JobComponent implements OnInit {
             this.jobsService.addJob(this.newJob).subscribe(
                 data => {
                     console.log(data);
-                    this.toast.setMessage('New germline created', 'success');
+                    this.toast.setMessage('Created job: ' + this.newJob.name, 'success');
+                    this.resetNewJobObject();
                     this.getJobs();
                 },
                 error1 => {
@@ -157,7 +161,10 @@ export class JobComponent implements OnInit {
         const approve = confirm('Are you sure you want to delete the job?');
         if (approve) {
             this.jobsService.deleteJob(jobID).subscribe(
-                () => this.toast.setMessage('Job deleted', 'success'),
+                res => {
+                    this.toast.setMessage('Job deleted', 'success'), this.getJobs();
+                    console.log(this.toast);
+                },
                 error => console.log(error),
             );
         }
