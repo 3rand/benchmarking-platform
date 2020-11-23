@@ -4,9 +4,10 @@ import SequenceFile from '../models/sequence-file';
 import Dataset from '../models/dataset';
 import * as _ from 'underscore';
 import * as path from 'path';
+import Sequence from '../models/sequence';
 
 const {v1: uuidv1} = require('uuid');
-
+const fasta = require('bionode-fasta');
 
 class SequenceFileCtrl extends BaseCtrl {
     model = SequenceFile;
@@ -26,6 +27,7 @@ class SequenceFileCtrl extends BaseCtrl {
             const datasets = await this.modelDataset.find({
                 owner: decodedToken.user._id
             });
+
             const fileIds = [];
             for (const ds of datasets) {
                 for (const file of ds.files) {
@@ -37,9 +39,10 @@ class SequenceFileCtrl extends BaseCtrl {
                 _id: {
                     $in: _.uniq(fileIds)
                 }
-            }).populate('datasets');
+            }).populate('datasets').fill('seqencesCount');
 
             const items = [];
+            console.log(docs);
             for (const doc of docs) {
                 const item = {
                     _id: doc._doc._id,
@@ -47,7 +50,7 @@ class SequenceFileCtrl extends BaseCtrl {
                     type: doc._doc.type,
                     uploadDate: doc._doc.uploadDate,
                     datasets: _.pluck(doc._doc.datasets, 'name').join(', '),
-                    sequences: Math.round(Math.random() * 10) * Math.round(Math.random() * 1000)
+                    seqencesCount: doc._doc.seqencesCount
                 };
                 items.push(item);
             }
@@ -103,6 +106,16 @@ class SequenceFileCtrl extends BaseCtrl {
                     await this.modelDataset.findOneAndUpdate({_id: dataset._id}, updatedDataset);
                 }
 
+                console.log(path.join(__dirname, '../uploads/') + uniqueFilename);
+                fasta.obj(path.join(__dirname, '../uploads/') + uniqueFilename).on('data', (s) => {
+                    new Sequence({
+                        seqId: s.id,
+                        content: s.seq,
+                        datasetId: obj.datasets,
+                        sourceFile: obj._id
+                    }).save();
+                });
+
                 res.status(201).json(obj);
             } else {
                 return res.status(400).json({error: 'No file uploaded.'});
@@ -110,7 +123,6 @@ class SequenceFileCtrl extends BaseCtrl {
         } catch (err) {
             return res.status(400).json({error: err.message});
         }
-
     };
 
     // Update by id
@@ -149,6 +161,50 @@ class SequenceFileCtrl extends BaseCtrl {
                 console.log(dataset);
                 await this.modelDataset.findOneAndUpdate({_id: dataset._id}, updatedDataset);
             }
+
+            res.sendStatus(200);
+        } catch (err) {
+            return res.status(400).json({error: err.message});
+        }
+    };
+
+    // Delete by id
+    delete = async (req, res) => {
+        try {
+            const token = req.headers.authorization.split(' ')[1];
+            const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+
+            if (!(!!decodedToken && !!decodedToken.user)) {
+                throw new Error('Invalid credentials');
+            }
+
+            await this.model.findOneAndRemove({_id: req.params.id});
+
+            const datasets = await this.modelDataset.find({
+                owner: decodedToken.user._id,
+            });
+
+            for (const ds of datasets) {
+                const dataset = ds._doc;
+                if (!dataset.files) {
+                    dataset.files = [];
+                }
+
+                // TODO
+                // remove file from datasets, if datasets was removed from file
+                if (dataset.files.includes(req.params.id)) {
+                    dataset.files = dataset.files.filter((value, index, arr) => {
+                        return value !== req.params.id;
+                    });
+                    console.log('Remove file ' + req.params.id + ' from dataset ' + dataset._id, dataset.files);
+                }
+
+                const updatedDataset = Object.assign({}, dataset);
+                delete updatedDataset._id;
+                console.log(dataset);
+                await this.modelDataset.findOneAndUpdate({_id: dataset._id}, updatedDataset);
+            }
+
 
             res.sendStatus(200);
         } catch (err) {

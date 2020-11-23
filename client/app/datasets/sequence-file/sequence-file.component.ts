@@ -85,12 +85,14 @@ export class SequenceFileComponent implements OnInit {
     ngOnInit(): void {
         this.getDatasets();
         this.getSequenceFiles();
+        this.resetNewFileObject();
     }
 
 
     resetNewFileObject(): void {
         this.newFile = {
-            datasets: []
+            datasets: [],
+            type: 'FASTA'
         };
     }
 

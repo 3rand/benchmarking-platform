@@ -17,9 +17,9 @@ class DatasetCtrl extends BaseCtrl {
             const docs = await this.model.find({owner: decodedToken.user._id});
             res.status(200).json(docs);
         } catch (err) {
-            return res.status(400).json({ error: err.message });
+            return res.status(400).json({error: err.message});
         }
-    }
+    };
 
     // Get condensed
     getCondensed = async (req, res) => {
@@ -28,31 +28,19 @@ class DatasetCtrl extends BaseCtrl {
             const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
 
             if (!(!!decodedToken && !!decodedToken.user)) {
-                throw new Error('Invalid credentials');
+                return res.status(400).json({error: 'Invalid credentials'});
             }
 
 
             const docs = await this.model.find({
                 owner: decodedToken.user._id
             });
-            const items = [];
-            for (const doc of docs) {
-                const item = {
-                    _id: doc._doc._id,
-                    name: doc._doc.name,
-                    description: doc._doc.description,
-                    createdDate: doc._doc.createdDate,
-                    files: doc._doc.files.length,
-                    annotations: Math.round(Math.random() *  10) * Math.round(Math.random() * 5),
-                    sequences: Math.round(Math.random() *  10) * Math.round(Math.random() * 1000)
-                };
-                items.push(item);
-            }
-            res.status(200).json(items);
+
+            res.status(200).json(docs);
         } catch (err) {
             return res.status(400).json({error: err.message});
         }
-    }
+    };
 
     // Insert
     insert = async (req, res) => {
@@ -61,16 +49,16 @@ class DatasetCtrl extends BaseCtrl {
             const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
 
             if (!(!!decodedToken && !!decodedToken.user)) {
-                throw new Error('Invalid credentials');
+                return res.status(400).json({error: 'Invalid credentials'});
             }
 
             req.body.owner = decodedToken.user._id;
             const obj = await new this.model(req.body).save();
             res.status(201).json(obj);
         } catch (err) {
-            return res.status(400).json({ error: err.message });
+            return res.status(400).json({error: err.message});
         }
-    }
+    };
 }
 
 export default DatasetCtrl;

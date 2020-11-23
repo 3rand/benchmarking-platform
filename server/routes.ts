@@ -5,6 +5,7 @@ import UserCtrl from './controllers/user';
 import DatasetCtrl from './controllers/dataset';
 import SequenceFileCtrl from './controllers/sequence-file';
 import GermlineCtrl from './controllers/germline';
+import ToolCtrl from './controllers/tool';
 
 function setRoutes(app) {
     const router = express.Router();
@@ -13,6 +14,7 @@ function setRoutes(app) {
     const datasetCtrl = new DatasetCtrl();
     const sequenceFileCtrl = new SequenceFileCtrl();
     const germlineCtrl = new GermlineCtrl();
+    const toolCtrl = new ToolCtrl();
 
     // Sequences
     router.route('/sequences').get(sequenceCtrl.getAll);
@@ -39,6 +41,7 @@ function setRoutes(app) {
     router.route('/dataset/:id').get(datasetCtrl.get);
     router.route('/dataset/:id').put(datasetCtrl.update);
     router.route('/dataset/:id').delete(datasetCtrl.delete);
+
     // Sequence files
     router.route('/sequenceFiles').get(sequenceFileCtrl.getAll);
     router.route('/sequenceFile').post(sequenceFileCtrl.insert);
@@ -53,6 +56,10 @@ function setRoutes(app) {
     router.route('/germline/:id').get(germlineCtrl.get);
     router.route('/germline/:id').put(germlineCtrl.update);
     router.route('/germline/:id').delete(germlineCtrl.delete);
+
+    // Tools
+    router.route('/tools').get(toolCtrl.getAll);
+
 
     // Apply the routes to our application with the prefix /api
     app.use('/api', router);

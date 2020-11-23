@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header">
         <h4>Annotations <span class="pull-right">
-            <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus-circle"></i> New annotation</button>
+            <button class="btn btn-success" (click)="open(newAnnotationModal)"><i class="fa fa-plus-circle"></i> New annotation</button>
         </span> </h4>
     </div>
     <div class="card-body" style="overflow-x: scroll">
@@ -10,48 +10,49 @@
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New Annotation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Select dataset
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item">Dataset 1</a>
-                                <a class="dropdown-item">Dataset 2</a>
-                                <a class="dropdown-item">Dataset 3</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Select tool
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item">IgBLAST 14</a>
-                                <a class="dropdown-item">IgBLAST 16</a>
-                                <a class="dropdown-item">partis</a>
-                            </div>
-                        </div>
+<ng-template #newAnnotationModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Annotation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-4 px-1">
+                <div class="dropdown">
+                    <button class="btn btn-block dropdown-toggle" ngbAutofocus [class]="{'btn-secondary' : !job.target, 'btn-success': !!job.target}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{!!job.target ? job.target.name : 'Select dataset'}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" *ngFor="let ds of datasets" (click)="job.target=ds">{{ds.name}}</a>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Submit job</button>
+            <div class="col-4 px-1">
+                <div class="dropdown">
+                    <button class="btn btn-block dropdown-toggle"  [class]="{'btn-secondary' : !job.tool, 'btn-success': !!job.tool}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{!!job.tool ? job.tool.name+' '+job.tool.version : 'Select tool'}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" *ngFor="let tool of tools" (click)="job.tool=tool">{{tool.name}} {{tool.version}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 px-1">
+                <div class="dropdown">
+                    <button class="btn btn-block dropdown-toggle"  [class]="{'btn-secondary' : !job.germline, 'btn-success': !!job.germline}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{!!job.germline ? job.germline.name: 'Select germline'}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" *ngFor="let germline of germlines" (click)="job.germline=germline">{{germline.name}}</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.dismiss()">Close</button>
+        <button type="button" (click)="modal.close(job)" [disabled]="(!job.target || !job.tool || !job.germline)" class="btn" [class]="{'btn-secondary': (!job.target || !job.tool || !job.germline), 'btn-success': (job.tool && job.target && job.germline)}">Submit job</button>
+    </div>
+</ng-template>

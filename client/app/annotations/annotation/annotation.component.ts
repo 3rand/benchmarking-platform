@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {DatasetService} from '../../services/datasets.service';
+import {ToolsService} from '../../services/tools.service';
+import {GermlinesService} from '../../services/germlines.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-annotation',
@@ -7,6 +11,15 @@ import {ActivatedRoute, Router} from '@angular/router';
     styleUrls: ['./annotation.component.scss']
 })
 export class AnnotationComponent implements OnInit {
+    datasets = [];
+    tools = [];
+    germlines = [];
+    job = {
+        type: 'annotation',
+        target: null,
+        tool: null,
+        germline: null
+    };
     tableSettings = {
         actions: {
             edit: false,
@@ -43,44 +56,16 @@ export class AnnotationComponent implements OnInit {
             }
         }
     };
-    annotations = [{
-        _id: '3124jlhn2j3k5j234j',
-        name: 'Test annotation_1',
-        dataset: 'Lorem ipsum',
-        nrseq: 735,
-        tool: 'IgBLAST 16',
-        job: 'SH341BF'
-    },
-        {
-            name: 'Test annotation_1',
-            _id: '3124jlhn2j3k5j234j',
-            dataset: 'Lorem ipsum',
-            nrseq: 735,
-            tool: 'partis',
-            job: 'SH341BF'
-        },
-        {
-            name: 'Test annotation_2',
-            _id: '3124jlhn2j3k5j234j',
-            dataset: 'Other dataset',
-            nrseq: 856,
-            tool: 'IgBLAST 16',
-            job: 'XDF456W'
-        },
-        {
-            name: 'Test annotation_2',
-            _id: '3124jlhn2j3k5j234j',
-            dataset: 'Other dataset',
-            nrseq: 856,
-            tool: 'partis',
-            job: 'XDF456W'
-        }];
+    annotations = [];
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private datasetService: DatasetService, private toolsService: ToolsService, private germlinesService: GermlinesService, private modalService: NgbModal) {
     }
 
     ngOnInit(): void {
-
+        this.resetJobObject();
+        this.getDatasets();
+        this.getTools();
+        this.getGermlines();
     }
 
     tableEvent($event) {
@@ -88,5 +73,60 @@ export class AnnotationComponent implements OnInit {
         if ($event.action === 'view') {
             this.router.navigate(['/annotations', $event.data._id, 'details']);
         }
+    }
+
+    resetJobObject() {
+        this.job = {
+            type: 'annotation',
+            target: null,
+            tool: null,
+            germline: null
+        };
+    }
+
+    getDatasets(): void {
+        this.datasetService.getDatasetsCondensed().subscribe(
+            data => {
+                this.datasets = data;
+            },
+            error1 => {
+                console.log(error1);
+            }
+        );
+    }
+
+    getTools(): void {
+        this.toolsService.getTools().subscribe(
+            data => {
+                console.log(data);
+                this.tools = data;
+            },
+            error1 => {
+                console.log(error1);
+            }
+        );
+    }
+
+    getGermlines(): void {
+        this.germlinesService.getGermlines().subscribe(
+            data => {
+                console.log(data);
+                this.germlines = [{
+                    name: 'IMGT 2020.08.17'
+                }];
+            },
+            error1 => {
+                console.log(error1);
+            }
+        );
+    }
+
+    open(content) {
+        this.modalService.open(content).result.then((result) => {
+            console.log(this.job);
+        }, (reason) => {
+            console.log('modal closed');
+            this.resetJobObject();
+        });
     }
 }

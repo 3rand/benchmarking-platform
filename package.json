@@ -42,6 +42,8 @@
     "@swimlane/ngx-charts": "^14.0.0",
     "@types/underscore": "^1.10.12",
     "bcryptjs": "^2.4.3",
+    "bio-parsers": "^6.0.4",
+    "bionode-fasta": "^0.5.6",
     "bootstrap": "^4.4.1",
     "canvas": "^2.6.1",
     "dotenv": "^8.2.0",
@@ -50,8 +52,10 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
+    "line-reader": "^0.4.0",
     "moment": "^2.27.0",
     "mongoose": "^5.9.6",
+    "mongoose-fill": "^1.7.0",
     "morgan": "^1.10.0",
     "ng2-file-upload": "^1.4.0",
     "ng2-smart-table": "^1.6.0",
@@ -64,6 +68,8 @@
     "tslib": "^1.10.0",
     "underscore": "^1.10.2",
     "uuid": "^8.2.0",
+    "ve-range-utils": "^2.5.8",
+    "ve-sequence-utils": "^4.0.2",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

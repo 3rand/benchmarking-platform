@@ -4,6 +4,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {DatasetService} from '../../services/datasets.service';
 import {Router} from '@angular/router';
 import {ToastComponent} from '../../shared/toast/toast.component';
+import {error} from 'selenium-webdriver';
 
 @Component({
     selector: 'app-dataset',
@@ -92,7 +93,7 @@ export class DatasetComponent implements OnInit {
     }
 
     open(content) {
-        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+        this.modalService.open(content).result.then((result) => {
             console.log(this.newDataset);
             if (!!this.newDataset._id) {
                 this.datasetService.editDataset(this.newDataset).subscribe(
@@ -104,6 +105,7 @@ export class DatasetComponent implements OnInit {
                     },
                     error1 => {
                         console.log(error1);
+                        this.toast.setMessage(error1.message, 'danger');
                         this.resetNewDatasetObject();
                     }
                 );
@@ -117,6 +119,7 @@ export class DatasetComponent implements OnInit {
                     },
                     error1 => {
                         console.log(error1);
+                        this.toast.setMessage(error1.message, 'danger');
                         this.resetNewDatasetObject();
                     }
                 );
