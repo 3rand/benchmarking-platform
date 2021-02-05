@@ -1,6 +1,7 @@
 const SequenceConfigs = {
     acceptedFileTypes: ['FASTA', 'FASTQ'],
-    maxFileSize: 100000
+    maxFileSize: 1000000,
+    jobStatusSteps: ['SUBMITTED', 'ERROR', 'IN PROGRESS', 'DONE']
 };
 
 export default SequenceConfigs;

@@ -111,7 +111,17 @@ export class GermlineComponent implements OnInit {
 
         }
         if ($event.action === 'delete') {
-
+            if (confirm('Are you sure you want to delete germline ' + $event.data.name + '? If you have used this germline, references might be broken.')) {
+                this.germlineService.deleteGermline($event.data).subscribe(
+                    data => {
+                        this.toast.setMessage('Germline deleted', 'success');
+                        this.getGermlines();
+                    },
+                    error => {
+                        this.toast.setMessage(error.message, 'danger');
+                    }
+                );
+            }
         }
     }
 
@@ -145,7 +155,6 @@ export class GermlineComponent implements OnInit {
                 data => {
                     this.toast.setMessage('Germline successfully edited.', 'success');
                     this.getGermlines();
-
                 },
                 error1 => {
                     console.log(error1);
@@ -158,7 +167,7 @@ export class GermlineComponent implements OnInit {
                 data => {
                     console.log(data);
                     this.toast.setMessage('New germline created', 'success');
-                    this.getGermlines();
+                    this.router.navigate(['/germlines', data._id, 'vgenes']);
                 },
                 error1 => {
                     console.log(error1);

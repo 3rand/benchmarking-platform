@@ -112,7 +112,7 @@ class SequenceFileCtrl extends BaseCtrl {
                         seqId: s.id,
                         content: s.seq,
                         datasetId: obj.datasets,
-                        sourceFile: obj._id
+                        sourceFile: objFile._id
                     }).save();
                 });
 

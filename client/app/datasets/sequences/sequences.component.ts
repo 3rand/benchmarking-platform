@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {SequenceService} from '../../services/sequence.service';
 
 @Component({
     selector: 'app-sequences',
@@ -22,61 +23,35 @@ export class SequencesComponent implements OnInit {
             seqId: {
                 title: 'Sequence ID'
             },
-            sequence: {
+            content: {
                 title: 'Sequence',
                 type: 'string',
                 width: '200px'
             },
-            file: {
+            sourceFile: {
                 title: 'File',
             },
-            datasets: {
+            datasetId: {
                 title: 'Datasets'
-            },
-            annotations: {
-                title: 'Annotations',
-                filter: false
             }
         }
     };
-    sequences = [{
-        seqId: 'seq0',
-        sequence: 'tgcaccaaacatgtctaaagctggaaccaaaattactttctttgaagacaaaaactttca' +
-            'aggccgccactatgacagcgattgcgactgtgcagatttccacatgtacctgagccgctg' +
-            'caactccatcagagtggaaggaggcacctgggctgtgtatg',
-        file: 'my_fasta_0.fasta',
-        datasets: 'Lorem ipsum',
-        annotations: 6
-    },
-        {
-            seqId: 'seq1',
-            sequence: 'tgcaccaaacatgtctaaagctggaaccaaaattactttctttgaagacaaaaactttca' +
-                'tttaaattata' +
-                'caactccatcagagtggaaggaggcacctgggctgtgtatg',
-            file: 'my_fasta_0.fasta',
-            datasets: 'Lorem ipsum',
-            annotations: 6
-        },
-        {
-            seqId: 'seq2',
-            sequence: 'tgcaccaaacatgtctaaagctggaaccaaaattactttctttgaagacaaaaactttca' +
-                'caactccatcagagtggaaggaggcacctgggctgtgtatg',
-            file: 'my_fasta_0.fasta',
-            datasets: 'Lorem ipsum',
-            annotations: 6
-        },
-        {
-            seqId: 'seq3',
-            sequence: 'caactccatcagagtggaaggaggcacctgggctgtgtatg',
-            file: 'my_fasta_0.fasta',
-            datasets: 'Lorem ipsum',
-            annotations: 6
-        }];
+    sequences = [];
 
-    constructor() {
+    constructor(private sequenceService: SequenceService) {
     }
 
     ngOnInit(): void {
+        this.getSequences();
+    }
+
+    getSequences(): void {
+        this.sequenceService.getSequences().subscribe(data => {
+            console.log(data);
+            this.sequences = data;
+        }, error1 => {
+            console.log(error1);
+        });
     }
 
 }

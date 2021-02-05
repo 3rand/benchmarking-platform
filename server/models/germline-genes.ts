@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const germlineGenesSchema = new mongoose.Schema({
     name: String,
     type: String,
+    chain: String,
     sequence: String
 });
 

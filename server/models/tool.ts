@@ -9,7 +9,9 @@ const Schema = mongoose.Schema;
 const toolsSchema = new mongoose.Schema({
     name: String,
     version: String,
-    description: String
+    description: String,
+    gitRepo: String,
+    pathCmd: String
 });
 
 

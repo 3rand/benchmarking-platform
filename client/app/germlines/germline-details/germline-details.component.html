@@ -4,8 +4,9 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-6">Date Created: <strong>20/07/2020</strong></div>
-            <div class="col-6">Privacy: <strong>Public</strong></div>
+            <div class="col-4">Date Created: <strong>{{germline.createdDate}}</strong></div>
+            <div class="col-4">Privacy: <strong>{{germline.privacy}}</strong></div>
+            <div class="col-4"><button class="btn btn-info pull-right" (click)="open(addGenesModal)"><i class="fa fa-plus"></i> Add {{action}}</button></div>
         </div>
         <div class="row">
             <div class="col-12">
@@ -23,15 +24,58 @@
             </div>
         </div>
     </div>
-    <div class="card-body" *ngIf="action=='vgenes'">
+    <div class="card-body table-container" *ngIf="action=='vgenes'">
         <ng2-smart-table [settings]="tableSettings" [source]="vgenes"> </ng2-smart-table>
     </div>
-    <div class="card-body" *ngIf="action=='dgenes'">
+    <div class="card-body table-container" *ngIf="action=='dgenes'">
         <ng2-smart-table [settings]="tableSettings" [source]="dgenes"> </ng2-smart-table>
     </div>
-    <div class="card-body" *ngIf="action=='jgenes'">
+    <div class="card-body table-container" *ngIf="action=='jgenes'">
         <ng2-smart-table [settings]="tableSettings" [source]="jgenes"> </ng2-smart-table>
     </div>
 </div>
 
 
+<ng-template #addGenesModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add {{action}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <section *ngIf="!newFile._id">
+            <h5>Add sequence file from your computer</h5>
+            <div class="drop-container"
+                 ngFileDrop
+                 [options]="options"
+                 (uploadOutput)="onUploadOutput($event)"
+                 [uploadInput]="uploadInput"
+                 [ngClass]="{ 'is-drop-over': dragOver }">
+            </div>
+
+            <label class="upload-button">
+                <input
+                        type="file"
+                        ngFileSelect
+                        [options]="options"
+                        (uploadOutput)="onUploadOutput($event)"
+                        [uploadInput]="uploadInput" />
+            </label>
+        </section>
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{!!newFile.chain ? newFile.chain : 'Select chain'}}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" *ngFor="let chain of chains" (click)="newFile.chain=chain">{{chain}}</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" *ngIf="!newFile._id" class="btn btn-outline-dark" (click)="startUpload()">Ok</button>
+        <button type="button" *ngIf="!!newFile._id" class="btn btn-outline-dark" (click)="modal.close(newFile)">Ok</button>
+    </div>
+</ng-template>
+
+<app-toast [message]="toast.message"></app-toast>

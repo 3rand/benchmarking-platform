@@ -1,10 +1,44 @@
+<app-toast [message]="toast.message"></app-toast>
+
 <div class="card">
     <div class="card-header">
-        <h4>Benchmarks <span class="pull-right">
-            <button class="btn btn-success" ><i class="fa fa-plus-circle"></i> New Job</button>
+        <h4>Jobs <span class="pull-right">
+            <button class="btn btn-success" (click)="open(jobEditModal)"><i class="fa fa-plus-circle"></i> New Job</button>
         </span></h4>
     </div>
     <div class="card-body" style="overflow-x: scroll">
         <ng2-smart-table [settings]="tableSettings" [source]="jobs" (custom)="tableEvent($event)"> </ng2-smart-table>
     </div>
 </div>
+
+<ng-template #jobEditModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title" *ngIf="!!newJob">Create new Job</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Job name</span>
+            </div>
+            <input type="text" class="form-control" placeholder="new job" aria-label="New job name" aria-describedby="basic-addon1" [(ngModel)]="newJob.name">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2">Dataset</span>
+            </div>
+            <input type="text" class="form-control" placeholder="dataset" aria-label="New job description" aria-describedby="basic-addon2" [(ngModel)]="newJob.dataset">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Job type</span>
+            </div>
+            <input type="text" class="form-control" placeholder="job type" aria-label="New job description" aria-describedby="basic-addon2" [(ngModel)]="newJob.type">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" [disabled]="newJob.name.length==0" (click)="modal.close(newJob)">Ok</button>
+    </div>
+</ng-template>

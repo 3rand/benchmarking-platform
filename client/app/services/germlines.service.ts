@@ -17,6 +17,10 @@ export class GermlinesService {
         return this.http.post<any>('/api/germline', germline);
     }
 
+    addGermlineGenes(germline: any): Observable<any> {
+        return this.http.post<any>( `/api/germlineGenes/${germline._id}`, germline);
+    }
+
     getGermline(germline: any): Observable<any> {
         return this.http.get<any>(`/api/germline/${germline._id}`);
     }
@@ -28,5 +32,4 @@ export class GermlinesService {
     deleteGermline(germline: any): Observable<any> {
         return this.http.delete(`/api/germline/${germline._id}`, {responseType: 'text'});
     }
-
 }

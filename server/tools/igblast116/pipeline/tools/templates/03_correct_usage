@@ -1,0 +1,20 @@
+
+
+Usage:
+
+start SPECIES RECEPTOR
+
+
+SPECIES
+    Can be one of {human,mouse,rabbit,rat,rhesus_monkey}
+    WARNING!
+    The grammar is not checked for this input. The pipeline will fail if you mistype
+
+
+RECEPTOR
+    Can be one of {ig,tr}
+    WARNING!
+    The grammar is not checked for this input. The pipeline will fail if you mistype
+
+
+

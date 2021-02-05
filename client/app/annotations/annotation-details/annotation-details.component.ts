@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {JobsService} from '../../services/jobs.service';
 
 @Component({
     selector: 'app-annotation-details',
@@ -75,13 +76,19 @@ export class AnnotationDetailsComponent implements OnInit {
             seqId: {
                 title: 'Sequence ID'
             },
-            vgene: {
+            locus: {
+                title: 'Locus',
+            },
+            productive: {
+                title: 'Locus',
+            },
+            v_call: {
                 title: 'V Gene',
             },
-            dgene: {
+            d_call: {
                 title: 'D Gene'
             },
-            jgene: {
+            j_call: {
                 title: 'J Gene',
             },
             cdr3aa: {
@@ -90,41 +97,9 @@ export class AnnotationDetailsComponent implements OnInit {
         }
     };
 
+    annotation;
 
-    sequencesAnnoated = [{
-        seqId: 'seq_0',
-        vgene: 'IGHV1-1',
-        dgene: 'IGHD1-2',
-        jgene: 'IGHJ4',
-        cdr3aa: 'CARTAXRTA'
-    },
-        {
-            seqId: 'seq_0',
-            vgene: 'IGHV1-1',
-            dgene: 'IGHD1-2',
-            jgene: 'IGHJ4',
-            cdr3aa: 'CAWRTAXRTA'
-        }, {
-            seqId: 'seq_1',
-            vgene: 'IGHV1-1',
-            dgene: 'IGHD1-2',
-            jgene: 'IGHJ4',
-            cdr3aa: 'CARTWQTTTA'
-        }, {
-            seqId: 'seq_2',
-            vgene: 'IGHV1-1',
-            dgene: 'IGHD1-2',
-            jgene: 'IGHJ4',
-            cdr3aa: 'XXXTAXRTA'
-        }, {
-            seqId: 'seq_3',
-            vgene: 'IGHV1-1',
-            dgene: 'IGHD1-2',
-            jgene: 'IGHJ4',
-            cdr3aa: 'CATTTTTA'
-        }];
-
-    constructor(private route: ActivatedRoute, private router: Router) {
+    constructor(private route: ActivatedRoute, private router: Router, private jobsService: JobsService) {
     }
 
     annotationdId;
@@ -135,10 +110,20 @@ export class AnnotationDetailsComponent implements OnInit {
             this.annotationdId = params.id;
             const routeParts = this.router.url.split('/');
             this.action = routeParts[routeParts.length - 1];
+            this.getAnnotation();
         });
-
-
     }
 
+    getAnnotation(): void {
+        this.jobsService.getJob({_id: this.annotationdId}).subscribe(
+            data => {
+                console.log(data);
+                this.annotation = data;
+            },
+            error => {
+                console.log(error);
+            }
+        )
+    }
 
 }

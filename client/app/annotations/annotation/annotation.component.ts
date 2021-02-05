@@ -4,6 +4,7 @@ import {DatasetService} from '../../services/datasets.service';
 import {ToolsService} from '../../services/tools.service';
 import {GermlinesService} from '../../services/germlines.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {JobsService} from '../../services/jobs.service';
 
 @Component({
     selector: 'app-annotation',
@@ -18,6 +19,7 @@ export class AnnotationComponent implements OnInit {
         type: 'annotation',
         target: null,
         tool: null,
+        status: null,
         germline: null
     };
     tableSettings = {
@@ -38,19 +40,16 @@ export class AnnotationComponent implements OnInit {
             perPage: 20
         },
         columns: {
-            name: {
-                title: 'Name'
+            createdDate: {
+                title: 'Date'
             },
-            dataset: {
+            target: {
                 title: 'Dataset',
             },
             tool: {
                 title: 'Tool'
             },
-            nrseq: {
-                title: 'Sequences annotated',
-            },
-            job: {
+            _id: {
                 title: 'Job ID',
                 filter: false
             }
@@ -58,11 +57,17 @@ export class AnnotationComponent implements OnInit {
     };
     annotations = [];
 
-    constructor(private router: Router, private datasetService: DatasetService, private toolsService: ToolsService, private germlinesService: GermlinesService, private modalService: NgbModal) {
+    constructor(private router: Router,
+                private datasetService: DatasetService,
+                private toolsService: ToolsService,
+                private germlinesService: GermlinesService,
+                private modalService: NgbModal,
+                private jobsService: JobsService) {
     }
 
     ngOnInit(): void {
         this.resetJobObject();
+        this.getAnnotations();
         this.getDatasets();
         this.getTools();
         this.getGermlines();
@@ -71,7 +76,7 @@ export class AnnotationComponent implements OnInit {
     tableEvent($event) {
         console.log($event);
         if ($event.action === 'view') {
-            this.router.navigate(['/annotations', $event.data._id, 'details']);
+            this.router.navigate(['/annotations', $event.data._id, 'sequences']);
         }
     }
 
@@ -80,6 +85,7 @@ export class AnnotationComponent implements OnInit {
             type: 'annotation',
             target: null,
             tool: null,
+            status: null,
             germline: null
         };
     }
@@ -111,9 +117,7 @@ export class AnnotationComponent implements OnInit {
         this.germlinesService.getGermlines().subscribe(
             data => {
                 console.log(data);
-                this.germlines = [{
-                    name: 'IMGT 2020.08.17'
-                }];
+                this.germlines = data;
             },
             error1 => {
                 console.log(error1);
@@ -121,9 +125,29 @@ export class AnnotationComponent implements OnInit {
         );
     }
 
+    getAnnotations(): void {
+        this.jobsService.getAnnotations().subscribe(data => {
+            this.annotations = data;
+            console.log(this.annotations);
+        }, error1 => {
+            console.log(error1);
+        });
+    }
+
     open(content) {
         this.modalService.open(content).result.then((result) => {
-            console.log(this.job);
+            const job = this.job;
+            job.target = job.target._id;
+            job.tool = job.tool._id;
+            job.germline = job.germline._id;
+            console.log(job);
+            job.status = 'SUBMITTED';
+            this.jobsService.addJob(job).subscribe(data => {
+                console.log(data);
+                this.getAnnotations();
+            }, error1 => {
+                console.log(error1);
+            });
         }, (reason) => {
             console.log('modal closed');
             this.resetJobObject();

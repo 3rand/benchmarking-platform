@@ -50,10 +50,6 @@ export class SequenceFileComponent implements OnInit {
             },
             datasets: {
                 title: 'Belongs to dataset'
-            },
-            sequences: {
-                title: 'Sequences',
-                filter: false
             }
         }
     };

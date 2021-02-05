@@ -1,0 +1,86 @@
+#!/bin/bash
+INPUT_DIR=/INPUT
+OUTPUT_DIR=/OUTPUT
+GERMLINE_DIR=/GERMLINES
+
+GERMLINE_BUILD_DIR=/germline-build
+mkdir -p $GERMLINE_BUILD_DIR
+
+# Getting paths
+MY_PATH="$APP_ROOT/pipeline"
+
+correct_usage()
+{
+   cat ${MY_PATH}/tools/templates/03_correct_usage
+}
+
+
+if [ -z "$1" ]
+then
+	echo "SPECIES not provided. Will exit."
+	correct_usage
+	exit 2
+else
+	 SPECIES=$1
+fi
+
+if [ -z "$2" ]
+then
+	echo "RECEPTOR not provided. Will exit."
+	correct_usage
+	exit 2
+else
+	 RECEPTOR=$2
+fi
+
+
+## BUILDING GERMLINE
+fetch_igblastdb.sh -o $GERMLINE_BUILD_DIR
+imgt2igblast.sh -i $GERMLINE_DIR -o $GERMLINE_BUILD_DIR
+cp -R /igblast-pipeline/pipeline/releases/ncbi-igblast-1.16.0/internal_data/ $GERMLINE_BUILD_DIR/
+
+## COLLECTING INPUTS
+UUID=$(cat /proc/sys/kernel/random/uuid)
+INPUT_FASTA=/tmp/input_fasta_$UUID.txt
+touch $INPUT_FASTA
+
+collect_fastas()
+{
+    the_path=$1
+    the_pattern=$3
+    the_output=$2
+
+    FQ_LIST=`find $the_path -type f -name "$the_pattern"`
+
+    for R1FQ in $FQ_LIST; do
+	echo $R1FQ >> $the_output
+    done
+}
+
+collect_fastas $INPUT_DIR $INPUT_FASTA "*.fasta"
+
+NR_FASTA=$(cat $INPUT_FASTA | wc -l)
+
+echo ""
+echo "Will process the following $NR_FASTA fasta files: "
+echo ""
+cat $INPUT_FASTA
+
+
+## RUNNING FOR EACH INPUT
+
+if [ -n "$NR_FASTA" ]
+then
+    for NUMBER_OF_FILE in $(seq 1 $NR_FASTA)
+    do
+        echo "Processing file number: $NUMBER_OF_FILE"
+        F1=`eval "sed '${NUMBER_OF_FILE}q;d' $INPUT_FASTA"`
+        echo ""
+	    echo ""
+	    COMMAND="AssignGenes.py igblast -s $F1 -b $GERMLINE_BUILD_DIR  --organism $SPECIES --loci $RECEPTOR --format airr --nproc $NUMBER_OF_PROCESSORS --outdir /OUTPUT"
+        echo ""
+        eval $COMMAND
+    done
+fi
+
+echo "DONE"

@@ -48,18 +48,6 @@ export class DatasetComponent implements OnInit {
             },
             createdDate: {
                 title: 'Created on'
-            },
-            files: {
-                title: 'Files',
-                filter: false
-            },
-            sequences: {
-                title: 'Sequences',
-                filter: false
-            },
-            annotations: {
-                title: 'Annotations',
-                filter: false
             }
         }
     };
@@ -115,7 +103,7 @@ export class DatasetComponent implements OnInit {
                         console.log(data);
                         this.toast.setMessage('Dataset created', 'success');
                         this.resetNewDatasetObject();
-                        this.router.navigate(['/datasets', data._id]);
+                        this.router.navigate(['/sequenceFiles']);
                     },
                     error1 => {
                         console.log(error1);
