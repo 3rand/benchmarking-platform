@@ -43,10 +43,10 @@ export class AnnotationComponent implements OnInit {
             createdDate: {
                 title: 'Date'
             },
-            target: {
+            targetName: {
                 title: 'Dataset',
             },
-            tool: {
+            toolName: {
                 title: 'Tool'
             },
             _id: {

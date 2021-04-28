@@ -1,1 +1,83 @@
-<p>benchmark-details works!</p>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    Dataset: <strong>{{benchmark.targetName}}</strong>
+                </div>
+                <div class="row" *ngFor="let ann of benchmark.annoations">
+                    {{ann.tool}}
+                </div>
+            </div>
+            <div class="col-3">Job ID: <strong>{{benchmark._id}}</strong></div>
+            <div class="col-3">Status: <strong>{{benchmark.status}}</strong></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4 text-black-50">Collection</div>
+            <div class="col-4 text-black-50">View as</div>
+            <div class="col-4 text-black-50">Filter for</div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <ul ngbNav #nav="ngbNav" [(activeId)]="L1" class="nav-tabs">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>V Genes</a>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>D Genes</a>
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <a ngbNavLink>J Genes</a>
+                    </li>
+                    <li [ngbNavItem]="4">
+                        <a ngbNavLink>CDR3 aa</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-4">
+                <ul ngbNav #nav="ngbNav" [(activeId)]="L2" class="nav-tabs">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>Table</a>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>Chart</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-4">
+                <ul ngbNav #nav="ngbNav" [(activeId)]="L3" class="nav-tabs" *ngIf="L1 < 4">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>Genes</a>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>Subgroups</a>
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <a ngbNavLink>Alelles</a>
+                    </li>
+                </ul>
+
+                <ul ngbNav #nav="ngbNav" [(activeId)]="L3" class="nav-tabs" *ngIf="L1 == 4">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>Raw</a>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>Filter productive</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" *ngIf="L2==1">
+        <ng2-smart-table *ngIf="L3==1" [settings]="tableSettings1" [source]="benchmark.data.vgenes.gene"></ng2-smart-table>
+        <ng2-smart-table *ngIf="L3==2" [settings]="tableSettings1" [source]="benchmark.data.vgenes.fam"></ng2-smart-table>
+        <ng2-smart-table *ngIf="L3==3" [settings]="tableSettings1" [source]="benchmark.data.vgenes.alelle"></ng2-smart-table>
+    </div>
+    <div class="card-body" *ngIf="L2==2">
+
+    </div>
+</div>
+
+

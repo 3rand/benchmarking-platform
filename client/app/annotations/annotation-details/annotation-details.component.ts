@@ -80,7 +80,7 @@ export class AnnotationDetailsComponent implements OnInit {
                 title: 'Locus',
             },
             productive: {
-                title: 'Locus',
+                title: 'Productive',
             },
             v_call: {
                 title: 'V Gene',

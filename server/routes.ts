@@ -65,6 +65,7 @@ function setRoutes(app) {
     router.route('/jobs').get(jobCtrl.getAll);
     router.route('/triggerProcessJobs').get(jobOps.processJobs);
     router.route('/anotationJobs').get(jobCtrl.getAnnotations);
+    router.route('/benchmarkJobs').get(jobCtrl.getBenchmarks);
     router.route('/job').post(jobCtrl.insert);
     router.route('/job/:id').get(jobCtrl.get);
     router.route('/job/:id').put(jobCtrl.update);

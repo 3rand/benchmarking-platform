@@ -101,17 +101,18 @@ class SequenceFileCtrl extends BaseCtrl {
                     }
 
                     const updatedDataset = Object.assign({}, dataset);
-                    delete updatedDataset._id;
+                    //delete updatedDataset._id;
                     console.log(updatedDataset);
                     await this.modelDataset.findOneAndUpdate({_id: dataset._id}, updatedDataset);
                 }
 
                 console.log(path.join(__dirname, '../uploads/') + uniqueFilename);
                 fasta.obj(path.join(__dirname, '../uploads/') + uniqueFilename).on('data', (s) => {
+                    console.log(s.id);
                     new Sequence({
                         seqId: s.id,
                         content: s.seq,
-                        datasetId: obj.datasets,
+                        datasetId: obj.datasets[0],
                         sourceFile: objFile._id
                     }).save();
                 });

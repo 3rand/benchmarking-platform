@@ -16,6 +16,10 @@ export class JobsService {
         return this.http.get<any[]>('/api/anotationJobs');
     }
 
+    getBenchmarks(): Observable<any[]> {
+        return this.http.get<any[]>('/api/benchmarkJobs');
+    }
+
     addJob(job: any): Observable<any> {
         return this.http.post<any>('/api/job', job);
     }

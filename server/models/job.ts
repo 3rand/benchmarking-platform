@@ -17,6 +17,10 @@ const jobSchema = new mongoose.Schema({
         ref: 'Germline'
     },
     type: String,
+    annotations: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Job'
+    }],
     status: {
         type: String,
         enum: SequenceConfigs.jobStatusSteps

@@ -75,11 +75,40 @@ class JobCtrl extends BaseCtrl {
                 const docObject = doc._doc;
 
                 docObject.createdDate = moment(docObject.createdDate).format('D/M/YYYY HH:mm');
-                docObject.target = docObject.target.name;
-                docObject.germline = docObject.germline.name;
-                docObject.tool = docObject.tool.name + ' ' + docObject.tool.version;
+                docObject.targetName = docObject.target.name;
+                docObject.germlineName = docObject.germline.name;
+                docObject.toolName = docObject.tool.name + ' ' + docObject.tool.version;
                 docsToReturn.push(docObject);
 
+            }
+
+            res.status(200).json(docsToReturn);
+        } catch (err) {
+            return res.status(400).json({error: err.message});
+        }
+    }
+
+// Get all
+    getBenchmarks = async (req, res) => {
+        try {
+
+            const token = req.headers.authorization.split(' ')[1];
+            const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+
+            if (!(!!decodedToken && !!decodedToken.user)) {
+                throw new Error('Invalid credentials');
+            }
+
+
+            const docs = await this.model.find({type: 'benchmark'}).populate('annotations');
+
+            const docsToReturn = [];
+
+            for (const doc of docs) {
+                const docObject = doc._doc;
+
+                docObject.createdDate = moment(docObject.createdDate).format('D/M/YYYY HH:mm');
+                docsToReturn.push(docObject);
             }
 
             res.status(200).json(docsToReturn);
